@@ -1,5 +1,4 @@
-import Image from 'next/image';
-import Link from 'next/link';
+import SwiperMovie from './components/swiperMovie';
 
 interface Movie {
   id: number;
@@ -51,23 +50,8 @@ export default async function Home() {
   return (
     <main className='ml-auto mr-auto max-w-7xl overflow-hidden'>
       <h2 className='text-2xl'> Популярные фильмы</h2>
-      <ul className='mt-5 flex gap-3 hover:overflow-x-scroll'>
-        {data &&
-          data.results.map((movie) => {
-            return (
-              <li key={movie.id} className='min-w-28'>
-                <Link href={`/movie/${movie.id}`}>
-                  <Image
-                    src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
-                    alt={movie.title}
-                    width={200}
-                    height={300}
-                  />
-                </Link>
-              </li>
-            );
-          })}
-      </ul>
+
+      <SwiperMovie movieData={data} />
     </main>
   );
 }

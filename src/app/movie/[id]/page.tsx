@@ -1,5 +1,6 @@
 import { getMovieInfo, getMovieTrailer, getMovieSimilar } from '@/app/lib/movieApi';
 import Image from 'next/image';
+import SwiperMovie from '@/app/components/swiperMovie';
 
 interface Movie {
   id: number;
@@ -22,7 +23,7 @@ export default async function MoviePage({ params }: { params: Params }) {
   const { id } = params;
   let movie: Movie | null = null;
   let videos: Video[] = [];
-  let similar: any 
+  let similar: any;
   try {
     movie = await getMovieInfo(id);
     videos = await getMovieTrailer(id);
@@ -36,12 +37,10 @@ export default async function MoviePage({ params }: { params: Params }) {
       </main>
     );
   }
-  // console.log(movie);
-  // console.log(similar);
-  console.log(videos)
+
   const trailer = videos.find((video) => video.type === 'Trailer' && video.site === 'YouTube');
   return (
-    <main className='ml-auto mr-auto flex max-w-7xl flex-col items-center'>
+    <main className='ml-auto mr-auto flex max-w-7xl flex-col items-center pb-4'>
       {trailer && (
         <div>
           <iframe
@@ -55,23 +54,23 @@ export default async function MoviePage({ params }: { params: Params }) {
           ></iframe>
         </div>
       )}
-
       {movie && (
         <>
-          <h1 className='mt-6 text-2xl'>{movie?.title}</h1>
+          <h1 className='mt-6 text-2xl'>{movie.title}</h1>
           <Image
             src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
             alt={movie.title}
             width={200}
             height={300}
           />
-          <p>{movie?.overview}</p>
+          <p>{movie.overview}</p>
         </>
       )}
-      {similar &&
-        similar.results.map((item: any) => {
-          return <h2>{item.original_title}</h2>;
-        })}
+      <div className='mt-6'>
+        <h3 className='text-3xl'>You may also like...</h3>
+
+        <SwiperMovie movieData={similar} />
+      </div>
     </main>
   );
 }
