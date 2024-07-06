@@ -1,58 +1,77 @@
-'use client';
-
-import { useEffect, useState } from 'react';
+import { getMovieInfo, getMovieTrailer, getMovieSimilar } from '@/app/lib/movieApi';
+import Image from 'next/image';
 
 interface Movie {
   id: number;
   title: string;
   overview: string;
+  poster_path: string;
+}
+
+interface Video {
+  id: string;
+  key: string;
+  name: string;
+  site: string;
+  type: string;
 }
 
 type Params = { id: string };
 
-export default function MoviePage({ params }: { params: Params }) {
+export default async function MoviePage({ params }: { params: Params }) {
   const { id } = params;
-
-  const [movie, setMovie] = useState<Movie | null>(null);
-  const [error, setError] = useState<string | null>(null);
-
-  useEffect(() => {
-    const fetchMovie = async () => {
-      const apiKey = process.env.NEXT_API_MOVIE_KEY;
-
-      const options = {
-        method: 'GET',
-        headers: {
-          accept: 'application/json',
-          Authorization: `Bearer ${apiKey}`,
-        },
-      };
-
-      try {
-        const response = await fetch(
-          `https://api.themoviedb.org/3/movie/${id}?language=en-US`,
-          options
-        );
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        const data: Movie = await response.json();
-        setMovie(data);
-      } catch (err) {
-        setError((err as Error).message);
-      }
-    };
-
-    if (id) fetchMovie();
-  }, [id]);
-
-  if (error) return <p>Error: {error}</p>;
-  if (!movie) return <p>Loading...</p>;
-
+  let movie: Movie | null = null;
+  let videos: Video[] = [];
+  let similar: any 
+  try {
+    movie = await getMovieInfo(id);
+    videos = await getMovieTrailer(id);
+    similar = await getMovieSimilar(id);
+  } catch (error) {
+    console.error('Error in Home component:', error);
+    return (
+      <main>
+        <h1>Произошла ошибка</h1>
+        <p>{(error as Error).message}</p>
+      </main>
+    );
+  }
+  // console.log(movie);
+  // console.log(similar);
+  console.log(videos)
+  const trailer = videos.find((video) => video.type === 'Trailer' && video.site === 'YouTube');
   return (
-    <main>
-      <h1>{movie.title}</h1>
-      <p>{movie.overview}</p>
+    <main className='ml-auto mr-auto flex max-w-7xl flex-col items-center'>
+      {trailer && (
+        <div>
+          <iframe
+            width='560'
+            height='315'
+            src={`https://www.youtube.com/embed/${trailer.key}`}
+            title='YouTube video player'
+            frameBorder='0'
+            allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture'
+            allowFullScreen
+          ></iframe>
+        </div>
+      )}
+
+      {movie && (
+        <>
+          <h1 className='mt-6 text-2xl'>{movie?.title}</h1>
+          <Image
+            src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
+            alt={movie.title}
+            width={200}
+            height={300}
+          />
+          <p>{movie?.overview}</p>
+        </>
+      )}
+      {similar &&
+        similar.results.map((item: any) => {
+          return <h2>{item.original_title}</h2>;
+        })}
     </main>
   );
 }
