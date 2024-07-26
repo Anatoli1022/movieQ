@@ -7,6 +7,10 @@ interface Movie {
   title: string;
   overview: string;
   poster_path: string;
+  original_language: string;
+  release_date: string;
+  vote_average: number;
+  vote_count: number;
 }
 
 interface Video {
@@ -31,46 +35,62 @@ export default async function MoviePage({ params }: { params: Params }) {
   } catch (error) {
     console.error('Error in Home component:', error);
     return (
-      <main>
+      <div>
         <h1>Произошла ошибка</h1>
         <p>{(error as Error).message}</p>
-      </main>
+      </div>
     );
   }
 
   const trailer = videos.find((video) => video.type === 'Trailer' && video.site === 'YouTube');
   return (
-    <main className='ml-auto mr-auto flex max-w-7xl flex-col items-center pb-4'>
+    <div className='pb-4'>
+      {movie && (
+        <>
+          <h1 className='text-2xl'>{movie.title}</h1>
+          <div className='mt-3 flex gap-x-5'>
+            <Image
+              src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
+              alt={movie.title}
+              width={300}
+              height={400}
+            />
+            <div>
+              <p>
+                Average rating:
+                <span className='ml-2'>{movie.vote_average}</span>
+              </p>
+              <p className='mt-1'>
+                Number of votes:
+                <span className='ml-2'>{movie.vote_count}</span>
+              </p>
+              <p className='mt-1'>
+                Release date:
+                <span className='ml-2'>{movie.release_date}</span>
+              </p>
+              <p className='mt-4'>{movie.overview}</p>
+            </div>
+          </div>
+        </>
+      )}
       {trailer && (
-        <div>
+        <div className='mt-10'>
           <iframe
-            width='560'
-            height='315'
+            width='660'
+            height='415'
+            className='m-auto'
             src={`https://www.youtube.com/embed/${trailer.key}`}
             title='YouTube video player'
-            frameBorder='0'
             allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture'
             allowFullScreen
           ></iframe>
         </div>
       )}
-      {movie && (
-        <>
-          <h1 className='mt-6 text-2xl'>{movie.title}</h1>
-          <Image
-            src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
-            alt={movie.title}
-            width={200}
-            height={300}
-          />
-          <p>{movie.overview}</p>
-        </>
-      )}
-      <div className='mt-6'>
+      <div className='mt-8'>
         <h3 className='text-3xl'>You may also like...</h3>
 
         <SwiperMovie movieData={similar} />
       </div>
-    </main>
+    </div>
   );
 }

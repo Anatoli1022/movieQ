@@ -40,18 +40,18 @@ export default async function Home() {
   } catch (error) {
     console.error('Error in Home component:', error);
     return (
-      <main>
-        <h1>Произошла ошибка</h1>
+      <div>
+        <h1>An error has occurred</h1>
         <p>{(error as Error).message}</p>
-      </main>
+      </div>
     );
   }
 
   return (
-    <main className='ml-auto mr-auto max-w-7xl overflow-hidden'>
-      <h2 className='text-2xl'> Популярные фильмы</h2>
+    <div className='overflow-hidden'>
+      <h2 className='text-2xl'>Popular movies</h2>
 
       <SwiperMovie movieData={data} />
-    </main>
+    </div>
   );
 }
