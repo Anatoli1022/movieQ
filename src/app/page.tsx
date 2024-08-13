@@ -1,5 +1,11 @@
+import type { Metadata } from 'next';
+
 import SwiperMovie from './components/swiperMovie';
 import { fetchMovieData } from './lib/movieApi';
+
+export const metadata: Metadata = {
+  title: 'Home',
+};
 interface Movie {
   id: number;
   title: string;

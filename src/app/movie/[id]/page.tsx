@@ -1,6 +1,24 @@
-import { fetchMovieData } from '@/app/lib/movieApi';
+import type { Metadata } from 'next';
 import Image from 'next/image';
+import { fetchMovieData } from '@/app/lib/movieApi';
 import SwiperMovie from '@/app/components/swiperMovie';
+
+export async function generateMetadata({ params }: { params: Params }): Promise<Metadata> {
+  const { id } = params;
+  let movie: Movie | null = null;
+
+  try {
+    movie = await fetchMovieData(id);
+  } catch (error) {
+    console.error('Error fetching movie data:', error);
+  }
+  const title = movie ? movie.title : 'Movie Details';
+  const description = movie ? movie.overview : 'Movie details page';
+  return {
+    title,
+    description,
+  };
+}
 
 interface Movie {
   id: number;
