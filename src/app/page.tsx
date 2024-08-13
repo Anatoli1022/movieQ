@@ -1,5 +1,5 @@
 import SwiperMovie from './components/swiperMovie';
-
+import { fetchMovieData } from './lib/movieApi';
 interface Movie {
   id: number;
   title: string;
@@ -12,31 +12,14 @@ interface ApiResponse {
 
 export const runtime = 'edge';
 
-async function getData() {
-  const apiKey = process.env.NEXT_API_MOVIE_KEY;
-  const options = {
-    method: 'GET',
-    headers: {
-      accept: 'application/json',
-      Authorization: `Bearer ${apiKey}`,
-    },
-  };
-  const res = await fetch('https://api.themoviedb.org/3/movie/popular?language=en-US&page=1', options);
-
-  if (!res.ok) {
-    console.error('Failed to fetch data:', res.status, res.statusText);
-
-    throw new Error('Failed to fetch data');
-  }
-
-  return res.json();
-}
-
 export default async function Home() {
-  let data: ApiResponse | null = null;
-
+  let popularMovie: ApiResponse | null = null;
+  let topRatedMovie: ApiResponse | null = null;
+  let upcomingMovie: ApiResponse | null = null;
   try {
-    data = await getData();
+    popularMovie = await fetchMovieData('popular');
+    topRatedMovie = await fetchMovieData('top_rated');
+    upcomingMovie = await fetchMovieData('upcoming');
   } catch (error) {
     console.error('Error in Home component:', error);
     return (
@@ -48,10 +31,19 @@ export default async function Home() {
   }
 
   return (
-    <div className='overflow-hidden'>
-      <h2 className='text-2xl'>Popular movies</h2>
-
-      <SwiperMovie movieData={data} />
+    <div className='flex flex-col gap-10 overflow-hidden'>
+      <div>
+        <h2 className='text-2xl'>Popular movies</h2>
+        <SwiperMovie movieData={popularMovie} />
+      </div>
+      <div>
+        <h2 className='text-2xl'>Top rated movies</h2>
+        <SwiperMovie movieData={topRatedMovie} />
+      </div>
+      <div>
+        <h2 className='text-2xl'>Upcoming movies</h2>
+        <SwiperMovie movieData={upcomingMovie} />
+      </div>
     </div>
   );
 }

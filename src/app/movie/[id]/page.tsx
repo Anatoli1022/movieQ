@@ -1,4 +1,4 @@
-import { getMovieInfo, getMovieTrailer, getMovieSimilar } from '@/app/lib/movieApi';
+import { fetchMovieData } from '@/app/lib/movieApi';
 import Image from 'next/image';
 import SwiperMovie from '@/app/components/swiperMovie';
 
@@ -12,7 +12,10 @@ interface Movie {
   vote_average: number;
   vote_count: number;
 }
-
+interface VideoResponse {
+  id: number;
+  results: Video[];
+}
 interface Video {
   id: string;
   key: string;
@@ -26,12 +29,12 @@ type Params = { id: string };
 export default async function MoviePage({ params }: { params: Params }) {
   const { id } = params;
   let movie: Movie | null = null;
-  let videos: Video[] = [];
+  let videos: VideoResponse;
   let similar: any;
   try {
-    movie = await getMovieInfo(id);
-    videos = await getMovieTrailer(id);
-    similar = await getMovieSimilar(id);
+    movie = await fetchMovieData(id);
+    videos = await fetchMovieData(id, '/videos');
+    similar = await fetchMovieData(id, '/similar');
   } catch (error) {
     console.error('Error in Home component:', error);
     return (
@@ -42,7 +45,7 @@ export default async function MoviePage({ params }: { params: Params }) {
     );
   }
 
-  const trailer = videos.find((video) => video.type === 'Trailer' && video.site === 'YouTube');
+  const trailer = videos.results.find((video: Video) => video.type === 'Trailer' && video.site === 'YouTube');
   return (
     <div className='pb-4'>
       {movie && (
