@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import Image from 'next/image';
 import { fetchMovieData } from '@/app/lib/movieApi';
-import SwiperMovie from '@/app/components/swiperMovie';
+import SwiperMovie from '@/app/components/shared/swiperMovie';
 
 export async function generateMetadata({ params }: { params: Params }): Promise<Metadata> {
   const { id } = params;

@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 
-import SwiperMovie from './components/swiperMovie';
-import { fetchMovieData } from './lib/movieApi';
+import SwiperMovie from '@/app/components/shared/swiperMovie';
+import { fetchMovieData } from '@/app/lib/movieApi';
 
 export const metadata: Metadata = {
   title: 'Home',
