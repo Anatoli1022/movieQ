@@ -1,5 +1,5 @@
 'use client';
-import { useEffect, useState, Suspense } from 'react';
+import { useEffect, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { searchMovieData } from '@/app/lib/movieApi';
 import Pagination from '@/app/components/Pagination';
@@ -23,16 +23,14 @@ const SearchResultsPage = () => {
   }, [searchQuery, currentPage]);
 
   return (
-    <Suspense fallback={<p>Loading films...</p>}>
-      <div>
-        {data && (
-          <>
-            <MovieList movies={data.results} />
-            <Pagination currentPage={currentPage} totalPages={data.total_pages} searchQuery={searchQuery} />
-          </>
-        )}
-      </div>
-    </Suspense>
+    <div>
+      {data && (
+        <>
+          <MovieList movies={data.results} />
+          <Pagination currentPage={currentPage} totalPages={data.total_pages} searchQuery={searchQuery} />
+        </>
+      )}
+    </div>
   );
 };
 
