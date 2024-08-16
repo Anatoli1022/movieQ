@@ -23,11 +23,13 @@ const SearchResultsPage = () => {
 
   return (
     <div>
-      {data && (
-        <>
-          <MovieList movies={data.results} />
-        </>
-      )}
+      {searchParams
+        ? data && (
+            <>
+              <MovieList movies={data.results} />
+            </>
+          )
+        : null}
     </div>
   );
 };
