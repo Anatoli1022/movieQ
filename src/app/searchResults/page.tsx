@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { searchMovieData } from '@/app/lib/movieApi';
 import { Suspense } from 'react';
+import Pagination from '@/app/components/Pagination';
 import MovieList from '../components/MovieList';
 
 const SearchResultsPage = () => {
@@ -28,6 +29,7 @@ const SearchResultsPage = () => {
         {data && (
           <>
             <MovieList movies={data.results} />
+            <Pagination currentPage={currentPage} totalPages={data.total_pages} searchQuery={searchQuery} />
           </>
         )}
       </div>
