@@ -15,7 +15,6 @@ const Search = () => {
     const fetchData = async () => {
       if (debouncedValue) {
         const result = await searchMovieData(debouncedValue);
-        console.log(result);
         setData(result.results);
       }
     };
