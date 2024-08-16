@@ -6,7 +6,7 @@ const Skeleton: React.FC<SkeletonProps> = ({ className }) => {
   return (
     <div role='status' className='animate-pulse rtl:space-x-reverse'>
       <div
-        className={`flex w-full items-center justify-center rounded-lg bg-gray-300 object-cover dark:bg-gray-700 ${className}`}
+        className={`flex items-center justify-center rounded-lg bg-gray-300 object-cover dark:bg-gray-700 ${className}`}
       >
         <svg
           className='h-10 w-10 text-gray-200 dark:text-gray-600'
