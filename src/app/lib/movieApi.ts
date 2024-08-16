@@ -38,7 +38,7 @@ export async function fetchMovieData(endpoint: string, additionalPath: string = 
   return res.json();
 }
 
-export async function searchMovieData(query: string) {
+export async function searchMovieData(query: string, currentPage: string | number = 1) {
   const apiKey = process.env.NEXT_API_MOVIE_KEY;
   const options = {
     method: 'GET',
@@ -48,7 +48,7 @@ export async function searchMovieData(query: string) {
     },
   };
 
-  const res = await fetch(`https://api.themoviedb.org/3/search/movie?query=${query}&page=1`, options);
+  const res = await fetch(`https://api.themoviedb.org/3/search/movie?query=${query}&page=${currentPage}`, options);
 
   if (!res.ok) {
     console.error('Failed to fetch data:', res.status, res.statusText);
