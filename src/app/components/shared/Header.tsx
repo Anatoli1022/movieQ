@@ -1,5 +1,4 @@
 import Link from 'next/link';
-
 import Search from './Search';
 
 const Header = () => {
@@ -7,7 +6,9 @@ const Header = () => {
     <header className='sticky top-0 z-20 border-b border-[#DDF6F2] bg-slate-900 px-2 py-4'>
       <nav className='m-auto flex max-w-7xl items-center justify-between'>
         <Link href={'/'}>MovieQ</Link>
+
         <Search />
+
         <div>
           <Link href={'/'}>Home</Link>
         </div>
