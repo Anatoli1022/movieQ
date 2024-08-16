@@ -24,16 +24,16 @@ const SearchResultsPage = () => {
   }, [searchQuery, currentPage]);
 
   return (
-    <Suspense>
-      <div>
+    <div>
+      <Suspense>
         {data && (
           <>
             <MovieList movies={data.results} />
             <Pagination currentPage={currentPage} totalPages={data.total_pages} searchQuery={searchQuery} />
           </>
         )}
-      </div>
-    </Suspense>
+      </Suspense>
+    </div>
   );
 };
 
