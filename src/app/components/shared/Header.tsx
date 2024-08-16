@@ -1,16 +1,35 @@
 'use client';
+
 import Link from 'next/link';
 import { searchMovieData } from '@/app/lib/movieApi';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useDebounce } from 'use-debounce';
 
 const Header = () => {
   const [data, setData] = useState<any>(null);
-  const handleSearchSubmit = async (e: any) => {
-    e.preventDefault();
+  const [searchFilm, setSearchFilm] = useState('');
+  const [debouncedValue] = useDebounce(searchFilm, 600);
+  const [isVisible, setVisible] = useState(false);
+  useEffect(() => {
+    const fetchData = async () => {
+      if (debouncedValue) {
+        const result = await searchMovieData(debouncedValue);
+        setData(result.results);
+      }
+    };
 
-    const result = await searchMovieData(e.target.value);
-    console.log(result.results);
-    setData(result.results);
+    fetchData();
+  }, [debouncedValue]);
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchFilm(e.target.value);
+  };
+  const handleFocus = () => {
+    setVisible(true);
+  };
+
+  const handleBlur = () => {
+    setVisible(false);
   };
 
   return (
@@ -21,29 +40,28 @@ const Header = () => {
           <Link href={'/'}>Home</Link>
         </div>
       </nav>
-      <form
-        action='
-     '
-      >
+      <form>
         <input
           type='text'
-          onChange={handleSearchSubmit}
+          // onBlur={handleBlur}
+          // autoFocus
+          onClick={handleFocus}
+          value={searchFilm}
+          onChange={handleChange}
           className='rounded-md border border-gray-300 px-3 py-2 text-black'
           placeholder='Search movies...'
         />
       </form>
 
-      {data && (
+      {isVisible && data && (
         <ul>
-          {data.map((item: any) => {
-            return (
-              <li key={item.id}>
-                <Link href={`/movie/${item.id}`}>
-                  <p>{item.title}</p>
-                </Link>
-              </li>
-            );
-          })}
+          {data.map((item: any) => (
+            <li key={item.id} onClick={handleBlur}>
+              <Link href={`/movie/${item.id}`}>
+                <p>{item.title}</p>
+              </Link>
+            </li>
+          ))}
         </ul>
       )}
     </header>
