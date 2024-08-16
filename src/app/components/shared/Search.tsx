@@ -4,6 +4,7 @@ import Image from 'next/image';
 import { searchMovieData } from '@/app/lib/movieApi';
 import { useState, useEffect } from 'react';
 import { useDebounce } from 'use-debounce';
+import Skeleton from './Skeleton';
 
 const Search = () => {
   const [data, setData] = useState<any>(null);
@@ -56,13 +57,17 @@ const Search = () => {
                 className='h-32 border-b border-[#DDF6F2] p-2 transition first-of-type:mt-0 hover:bg-slate-500'
               >
                 <Link href={`/movie/${item.id}`} className='flex gap-x-3'>
-                  <Image
-                    src={`https://image.tmdb.org/t/p/w500${item.poster_path}`}
-                    alt={item.title}
-                    width={70}
-                    height={100}
-                  />
-
+                  {item.poster_path ? (
+                    <Image
+                      src={`https://image.tmdb.org/t/p/w500${item.poster_path}`}
+                      alt={item.title}
+                      width={70}
+                      height={90}
+                      className='rounded-lg'
+                    />
+                  ) : (
+                    <Skeleton className={'h-[100px] w-[70px]'} />
+                  )}
                   <div className='flex flex-col justify-between'>
                     <p className='text-xs'>{item.title}</p>
                     <span className='block text-xs'>{item.release_date}</span>
@@ -74,7 +79,7 @@ const Search = () => {
           <Link
             href={{ pathname: '/searchResults', query: { search: searchFilm } }}
             onClick={handleBlur}
-            className='block rounded-b-2xl text-center transition hover:bg-slate-500'
+            className='block rounded-b-2xl p-1 text-center transition hover:bg-slate-500'
           >
             Show all results
           </Link>
