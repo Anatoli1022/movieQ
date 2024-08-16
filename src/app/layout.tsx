@@ -17,10 +17,10 @@ export default function RootLayout({
   return (
     <html lang='en'>
       <body className='bg-slate-900 text-white'>
-        <Suspense>
-          <Header />
+        <Header />
+        <Suspense fallback={null}>
+          <main className='ml-auto mr-auto mt-10 max-w-7xl'>{children}</main>{' '}
         </Suspense>
-        <main className='ml-auto mr-auto mt-10 max-w-7xl'>{children}</main>
         <Footer />
       </body>
     </html>
