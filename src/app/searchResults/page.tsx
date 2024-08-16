@@ -6,7 +6,7 @@ import MovieList from '../components/MovieList';
 
 const SearchResultsPage = () => {
   const searchParams = useSearchParams();
-  const searchQuery = searchParams.get('search') || '';
+  const searchQuery = searchParams.get('search') || 'random';
   const currentPage = parseInt(searchParams.get('page') || '1', 10);
   const [data, setData] = useState<any>(null);
 
@@ -23,13 +23,11 @@ const SearchResultsPage = () => {
 
   return (
     <div>
-      {searchParams
-        ? data && (
-            <>
-              <MovieList movies={data.results} />
-            </>
-          )
-        : null}
+      {data && (
+        <>
+          <MovieList movies={data.results} />
+        </>
+      )}
     </div>
   );
 };
