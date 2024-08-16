@@ -25,7 +25,7 @@ const SearchResultsPage = () => {
 
   return (
     <div>
-      <Suspense>
+      <Suspense fallback={<p>Loading films...</p>}>
         {data && (
           <>
             <MovieList movies={data.results} />
