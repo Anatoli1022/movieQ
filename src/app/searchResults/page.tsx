@@ -2,11 +2,12 @@
 import { useEffect, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { searchMovieData } from '@/app/lib/movieApi';
+import { Suspense } from 'react';
 import MovieList from '../components/MovieList';
 
 const SearchResultsPage = () => {
   const searchParams = useSearchParams();
-  const searchQuery = searchParams.get('search') || 'random';
+  const searchQuery = searchParams.get('search') || '';
   const currentPage = parseInt(searchParams.get('page') || '1', 10);
   const [data, setData] = useState<any>(null);
 
@@ -22,13 +23,15 @@ const SearchResultsPage = () => {
   }, [searchQuery, currentPage]);
 
   return (
-    <div>
-      {data && (
-        <>
-          <MovieList movies={data.results} />
-        </>
-      )}
-    </div>
+    <Suspense>
+      <div>
+        {data && (
+          <>
+            <MovieList movies={data.results} />
+          </>
+        )}
+      </div>
+    </Suspense>
   );
 };
 
