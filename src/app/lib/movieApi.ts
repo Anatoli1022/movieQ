@@ -6,7 +6,16 @@ interface Video {
   type: string;
 }
 
-export async function getMovieInfo(id: string) {
+// endpoints
+const upcoming = 'upcoming';
+const top_rated = 'top_rated';
+const popular = 'popular';
+
+//additionalPath
+const videos = '/videos';
+const similar = '/similar';
+
+export async function fetchMovieData(endpoint: string, additionalPath: string = '') {
   const apiKey = process.env.NEXT_API_MOVIE_KEY;
   const options = {
     method: 'GET',
@@ -15,17 +24,21 @@ export async function getMovieInfo(id: string) {
       Authorization: `Bearer ${apiKey}`,
     },
   };
-  const res = await fetch(`https://api.themoviedb.org/3/movie/${id}?language=en-US`, options);
+
+  const res = await fetch(
+    `https://api.themoviedb.org/3/movie/${endpoint}${additionalPath}?language=en-US&page=1`,
+    options,
+  );
+
   if (!res.ok) {
     console.error('Failed to fetch data:', res.status, res.statusText);
-
-    throw new Error('Failed to fetch data getMovieInfo');
+    throw new Error('Failed to fetch data');
   }
 
   return res.json();
 }
 
-export async function getMovieTrailer(movieId: string): Promise<Video[]> {
+export async function searchMovieData(query: string) {
   const apiKey = process.env.NEXT_API_MOVIE_KEY;
   const options = {
     method: 'GET',
@@ -34,30 +47,12 @@ export async function getMovieTrailer(movieId: string): Promise<Video[]> {
       Authorization: `Bearer ${apiKey}`,
     },
   };
-  const res = await fetch(`https://api.themoviedb.org/3/movie/${movieId}/videos?language=en-US`, options);
 
-  if (!res.ok) {
-    throw new Error('Failed to fetch video data getMovieTrailer');
-  }
+  const res = await fetch(`https://api.themoviedb.org/3/search/movie?query=${query}&page=1`, options);
 
-  const videoResponse = await res.json();
-  return videoResponse.results;
-}
-
-export async function getMovieSimilar(id: string) {
-  const apiKey = process.env.NEXT_API_MOVIE_KEY;
-  const options = {
-    method: 'GET',
-    headers: {
-      accept: 'application/json',
-      Authorization: `Bearer ${apiKey}`,
-    },
-  };
-  const res = await fetch(`https://api.themoviedb.org/3/movie/${id}/similar?language=en-US&page=1`, options);
   if (!res.ok) {
     console.error('Failed to fetch data:', res.status, res.statusText);
-
-    throw new Error('Failed to fetch data getMovieSimilar');
+    throw new Error('Failed to fetch data');
   }
 
   return res.json();

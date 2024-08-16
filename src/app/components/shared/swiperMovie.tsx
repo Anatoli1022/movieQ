@@ -19,7 +19,6 @@ interface ApiResponse {
 }
 
 const SwiperMovie = ({ movieData }: { movieData: ApiResponse | null }) => {
-  console.log(movieData);
   return (
     <Swiper
       slidesPerView={6}

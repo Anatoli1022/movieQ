@@ -1,6 +1,24 @@
-import { getMovieInfo, getMovieTrailer, getMovieSimilar } from '@/app/lib/movieApi';
+import type { Metadata } from 'next';
 import Image from 'next/image';
-import SwiperMovie from '@/app/components/swiperMovie';
+import { fetchMovieData } from '@/app/lib/movieApi';
+import SwiperMovie from '@/app/components/shared/swiperMovie';
+
+export async function generateMetadata({ params }: { params: Params }): Promise<Metadata> {
+  const { id } = params;
+  let movie: Movie | null = null;
+
+  try {
+    movie = await fetchMovieData(id);
+  } catch (error) {
+    console.error('Error fetching movie data:', error);
+  }
+  const title = movie ? movie.title : 'Movie Details';
+  const description = movie ? movie.overview : 'Movie details page';
+  return {
+    title,
+    description,
+  };
+}
 
 interface Movie {
   id: number;
@@ -11,8 +29,14 @@ interface Movie {
   release_date: string;
   vote_average: number;
   vote_count: number;
+  genres: [{ id: number; name: string }];
+  production_companies: [{ id: number; name: string; logo_path: string }];
+  production_countries: [{ name: string }];
 }
-
+interface VideoResponse {
+  id: number;
+  results: Video[];
+}
 interface Video {
   id: string;
   key: string;
@@ -26,12 +50,12 @@ type Params = { id: string };
 export default async function MoviePage({ params }: { params: Params }) {
   const { id } = params;
   let movie: Movie | null = null;
-  let videos: Video[] = [];
+  let videos: VideoResponse;
   let similar: any;
   try {
-    movie = await getMovieInfo(id);
-    videos = await getMovieTrailer(id);
-    similar = await getMovieSimilar(id);
+    movie = await fetchMovieData(id);
+    videos = await fetchMovieData(id, '/videos');
+    similar = await fetchMovieData(id, '/similar');
   } catch (error) {
     console.error('Error in Home component:', error);
     return (
@@ -42,7 +66,7 @@ export default async function MoviePage({ params }: { params: Params }) {
     );
   }
 
-  const trailer = videos.find((video) => video.type === 'Trailer' && video.site === 'YouTube');
+  const trailer = videos.results.find((video: Video) => video.type === 'Trailer' && video.site === 'YouTube');
   return (
     <div className='pb-4'>
       {movie && (
@@ -56,18 +80,55 @@ export default async function MoviePage({ params }: { params: Params }) {
               height={400}
             />
             <div>
-              <p>
-                Average rating:
+              <div>
+                <span className='font-semibold'> Average rating:</span>
                 <span className='ml-2'>{movie.vote_average}</span>
-              </p>
-              <p className='mt-1'>
-                Number of votes:
+              </div>
+              <div className='mt-2'>
+                <span className='font-semibold'>Number of votes:</span>
                 <span className='ml-2'>{movie.vote_count}</span>
-              </p>
-              <p className='mt-1'>
-                Release date:
+              </div>
+              <div className='mt-2'>
+                <span className='font-semibold'>Release date:</span>
                 <span className='ml-2'>{movie.release_date}</span>
-              </p>
+              </div>
+              <div className='mt-2 flex'>
+                <span className='font-semibold'>Genres:</span>
+                <ul className='ml-2 flex gap-x-2'>
+                  {movie.genres.map((item, i) => (
+                    <li key={item.id}>
+                      {item.name}
+                      {movie.genres.length - 1 === i ? '.' : ','}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+              <div className='mt-2 flex'>
+                <span className='text-nowrap font-semibold'>Production companies:</span>
+                <ul className='ml-2 flex flex-wrap items-center gap-x-2 gap-y-1'>
+                  {movie.production_companies.map((item, i) => (
+                    <li key={item.id}>
+                      <span>
+                        {item.name}
+                        {movie.production_companies.length - 1 === i ? '.' : ','}
+                      </span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+              <div className='mt-2 flex'>
+                <span className='font-semibold'>Production countries:</span>
+                <ul className='ml-2 flex gap-x-2'>
+                  {movie.production_countries.map((item, i) => (
+                    <li key={i}>
+                      <span>
+                        {item.name}
+                        {movie.production_countries.length - 1 === i ? '.' : ','}
+                      </span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
               <p className='mt-4'>{movie.overview}</p>
             </div>
           </div>
