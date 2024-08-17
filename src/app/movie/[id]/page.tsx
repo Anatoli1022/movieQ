@@ -37,6 +37,10 @@ interface VideoResponse {
   id: number;
   results: Video[];
 }
+
+interface ApiResponse {
+  results: Movie[];
+}
 interface Video {
   id: string;
   key: string;
@@ -51,7 +55,7 @@ export default async function MoviePage({ params }: { params: Params }) {
   const { id } = params;
   let movie: Movie | null = null;
   let videos: VideoResponse;
-  let similar: any;
+  let similar: ApiResponse;
   try {
     movie = await fetchMovieData(id);
     videos = await fetchMovieData(id, '/videos');
@@ -82,7 +86,7 @@ export default async function MoviePage({ params }: { params: Params }) {
             <div>
               <div>
                 <span className='font-semibold'> Average rating:</span>
-                <span className='ml-2'>{movie.vote_average}</span>
+                <span className='ml-2'>{movie.vote_average.toFixed(1)}</span>
               </div>
               <div className='mt-2'>
                 <span className='font-semibold'>Number of votes:</span>
@@ -147,10 +151,16 @@ export default async function MoviePage({ params }: { params: Params }) {
           ></iframe>
         </div>
       )}
-      <div className='mt-8'>
-        <h3 className='text-3xl'>You may also like...</h3>
 
-        <SwiperMovie movieData={similar} />
+      <div className='mt-8'>
+        {similar && similar.results.length > 0 ? (
+          <>
+            <h3 className='text-3xl'>You may also like...</h3>
+            <SwiperMovie movieData={similar} />
+          </>
+        ) : (
+          <h3 className='text-3xl'>No similar films were found.</h3>
+        )}
       </div>
     </div>
   );
