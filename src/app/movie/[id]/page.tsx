@@ -1,7 +1,9 @@
 import type { Metadata } from 'next';
-import Image from 'next/image';
 import { fetchMovieData } from '@/app/lib/movieApi';
 import SwiperMovie from '@/app/components/shared/swiperMovie';
+import { MovieImage } from '@/app/components/shared/movieImage/MovieImage';
+import Image from 'next/image';
+import noTrailerImage from '@/app/assets/noTrailer.svg';
 
 export async function generateMetadata({ params }: { params: Params }): Promise<Metadata> {
   const { id } = params;
@@ -19,37 +21,6 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
     description,
   };
 }
-
-interface Movie {
-  id: number;
-  title: string;
-  overview: string;
-  poster_path: string;
-  original_language: string;
-  release_date: string;
-  vote_average: number;
-  vote_count: number;
-  genres: [{ id: number; name: string }];
-  production_companies: [{ id: number; name: string; logo_path: string }];
-  production_countries: [{ name: string }];
-}
-interface VideoResponse {
-  id: number;
-  results: Video[];
-}
-
-interface ApiResponse {
-  results: Movie[];
-}
-interface Video {
-  id: string;
-  key: string;
-  name: string;
-  site: string;
-  type: string;
-}
-
-type Params = { id: string };
 
 export default async function MoviePage({ params }: { params: Params }) {
   const { id } = params;
@@ -77,13 +48,9 @@ export default async function MoviePage({ params }: { params: Params }) {
         <>
           <h1 className='text-2xl'>{movie.title}</h1>
           <div className='mt-3 flex gap-x-5'>
-            <Image
-              src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
-              alt={movie.title}
-              width={300}
-              height={400}
-            />
-            <div>
+            <MovieImage movie={movie} width={300} height={450} />
+
+            <div className='max-w-4xl'>
               <div>
                 <span className='font-semibold'> Average rating:</span>
                 <span className='ml-2'>{movie.vote_average.toFixed(1)}</span>
@@ -138,8 +105,8 @@ export default async function MoviePage({ params }: { params: Params }) {
           </div>
         </>
       )}
-      {trailer && (
-        <div className='mt-10'>
+      <div className='mt-10'>
+        {trailer ? (
           <iframe
             width='660'
             height='415'
@@ -149,8 +116,10 @@ export default async function MoviePage({ params }: { params: Params }) {
             allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture'
             allowFullScreen
           ></iframe>
-        </div>
-      )}
+        ) : (
+          <Image src={noTrailerImage} alt={'No trailer'} width={660} height={415} className='m-auto block rounded-lg' />
+        )}
+      </div>
 
       <div className='mt-8'>
         {similar && similar.results.length > 0 ? (

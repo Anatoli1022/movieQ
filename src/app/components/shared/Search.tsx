@@ -1,10 +1,9 @@
 'use client';
 import Link from 'next/link';
-import Image from 'next/image';
 import { searchMovieData } from '@/app/lib/movieApi';
 import { useState, useEffect } from 'react';
 import { useDebounce } from 'use-debounce';
-import Skeleton from './Skeleton';
+import { MovieImage } from '@/app/components/shared/movieImage/MovieImage';
 
 const Search = () => {
   const [data, setData] = useState<any>(null);
@@ -43,32 +42,23 @@ const Search = () => {
           onClick={handleFocus}
           value={searchFilm}
           onChange={handleChange}
-          className='w-full rounded-md border border-gray-300 px-3 py-2 text-black'
+          className='relative z-10 w-full rounded-md border border-gray-300 px-3 py-2 text-black'
           placeholder='Search movies...'
         />
       </form>{' '}
       {isVisible && searchFilm && data && (
         <div className='absolute w-full rounded-b-2xl bg-slate-900'>
-          <ul className='w-full columns-2 bg-slate-900'>
+          <ul className='-mt-1 grid w-full grid-cols-2 bg-slate-900'>
             {data.slice(0, 8).map((item: any) => (
               <li
                 key={item.id}
                 onClick={handleBlur}
-                className='h-32 border-b border-[#DDF6F2] p-2 transition first-of-type:mt-0 hover:bg-slate-500'
+                className='h-32 border-x border-b border-[#DDF6F2] border-opacity-25 p-2 transition first-of-type:mt-0 hover:bg-slate-500'
               >
                 <Link href={`/movie/${item.id}`} className='flex gap-x-3'>
-                  {item.poster_path ? (
-                    <Image
-                      src={`https://image.tmdb.org/t/p/w500${item.poster_path}`}
-                      alt={item.title}
-                      width={70}
-                      height={90}
-                      className='rounded-lg'
-                    />
-                  ) : (
-                    <Skeleton className={'h-[100px] w-[70px]'} />
-                  )}
-                  <div className='flex flex-col justify-between'>
+                  <MovieImage movie={item} width={70} height={100} />
+
+                  <div className='flex max-w-24 flex-col justify-between'>
                     <p className='text-xs'>{item.title}</p>
                     <span className='block text-xs'>{item.release_date}</span>
                   </div>
@@ -79,7 +69,7 @@ const Search = () => {
           <Link
             href={{ pathname: '/searchResults', query: { search: searchFilm } }}
             onClick={handleBlur}
-            className='block rounded-b-2xl p-1 text-center transition hover:bg-slate-500'
+            className='block rounded-b-2xl border border-[#DDF6F2] border-opacity-25 p-1 text-center transition hover:bg-slate-500'
           >
             Show all results
           </Link>

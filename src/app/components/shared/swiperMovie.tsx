@@ -1,12 +1,12 @@
 'use client';
 
-import Image from 'next/image';
 import Link from 'next/link';
+import { MovieImage } from '@/app/components/shared/movieImage/MovieImage';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { FreeMode } from 'swiper/modules';
-
 import 'swiper/css';
 import 'swiper/css/free-mode';
+
 
 interface Movie {
   id: number;
@@ -31,20 +31,13 @@ const SwiperMovie = ({ movieData }: { movieData: ApiResponse | null }) => {
       className='mySwiper mt-3 max-w-7xl'
     >
       {movieData &&
-        movieData.results.map((movie: any) => {
-          return (
-            <SwiperSlide key={movie.id}>
-              <Link href={`/movie/${movie.id}`}>
-                <Image
-                  src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
-                  alt={movie.title}
-                  width={200}
-                  height={300}
-                />
-              </Link>
-            </SwiperSlide>
-          );
-        })}
+        movieData.results.map((movie: Movie) => (
+          <SwiperSlide key={movie.id}>
+            <Link href={`/movie/${movie.id}`}>
+              <MovieImage movie={movie} width={200} height={300} />
+            </Link>
+          </SwiperSlide>
+        ))}
     </Swiper>
   );
 };

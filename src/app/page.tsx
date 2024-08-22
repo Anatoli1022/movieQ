@@ -1,5 +1,4 @@
 import type { Metadata } from 'next';
-
 import SwiperMovie from '@/app/components/shared/swiperMovie';
 import { fetchMovieData } from '@/app/lib/movieApi';
 
