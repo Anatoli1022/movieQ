@@ -1,11 +1,3 @@
-interface Video {
-  id: string;
-  key: string;
-  name: string;
-  site: string;
-  type: string;
-}
-
 // endpoints
 const upcoming = 'upcoming';
 const top_rated = 'top_rated';

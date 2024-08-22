@@ -19,7 +19,7 @@ export default function RootLayout({
       <body className='bg-slate-900 text-white'>
         <Header />
         <Suspense fallback={null}>
-          <main className='ml-auto mr-auto mt-10 max-w-7xl'>{children}</main>{' '}
+          <main className='ml-auto mr-auto mt-10 max-w-7xl'>{children}</main>
         </Suspense>
         <Footer />
       </body>
