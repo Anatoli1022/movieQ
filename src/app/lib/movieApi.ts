@@ -7,7 +7,7 @@ const popular = 'popular';
 const videos = '/videos';
 const similar = '/similar';
 
-export async function fetchMovieData(endpoint: string, additionalPath: string = '') {
+export async function fetchMovieData(endpoint: string, additionalPath: string = '', page: string | number = 1) {
   const apiKey = process.env.NEXT_API_MOVIE_KEY;
   const options = {
     method: 'GET',
@@ -18,7 +18,7 @@ export async function fetchMovieData(endpoint: string, additionalPath: string = 
   };
 
   const res = await fetch(
-    `https://api.themoviedb.org/3/movie/${endpoint}${additionalPath}?language=en-US&page=1`,
+    `https://api.themoviedb.org/3/movie/${endpoint}${additionalPath}?language=en-US&page=${page}`,
     options,
   );
 
