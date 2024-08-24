@@ -4,6 +4,7 @@ import SwiperMovie from '@/app/components/shared/swiperMovie';
 import { MovieImage } from '@/app/components/shared/movieImage/MovieImage';
 import Image from 'next/image';
 import noTrailerImage from '@/app/assets/noTrailer.svg';
+import type { Movie, Params, VideoResponse, ApiResponse, Video } from '@/app/types';
 
 export async function generateMetadata({ params }: { params: Params }): Promise<Metadata> {
   const { id } = params;

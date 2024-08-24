@@ -6,17 +6,7 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import { FreeMode } from 'swiper/modules';
 import 'swiper/css';
 import 'swiper/css/free-mode';
-
-
-interface Movie {
-  id: number;
-  title: string;
-  poster_path: string;
-}
-
-interface ApiResponse {
-  results: Movie[];
-}
+import type { Movie, ApiResponse } from '@/app/types';
 
 const SwiperMovie = ({ movieData }: { movieData: ApiResponse | null }) => {
   return (

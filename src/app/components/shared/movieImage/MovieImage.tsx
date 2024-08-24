@@ -2,13 +2,9 @@
 import { useState } from 'react';
 import Image from 'next/image';
 import { addDefaultImage } from './addDefaultImage';
-import Skeleton from '../Skeleton';
+import Skeleton from './Skeleton';
+import type { Movie} from '@/app/types';
 
-interface Movie {
-  id: number;
-  title: string;
-  poster_path: string;
-}
 export const MovieImage = ({ movie, width, height }: { movie: Movie; width: number; height: number }) => {
   const [isLoading, setIsLoading] = useState(true);
 
