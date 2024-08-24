@@ -1,19 +1,11 @@
 import type { Metadata } from 'next';
 import SwiperMovie from '@/app/components/shared/swiperMovie';
 import { fetchMovieData } from '@/app/lib/movieApi';
+import type { ApiResponse } from '@/app/types';
 
 export const metadata: Metadata = {
   title: 'Home',
 };
-interface Movie {
-  id: number;
-  title: string;
-  poster_path: string;
-}
-
-interface ApiResponse {
-  results: Movie[];
-}
 
 export const runtime = 'edge';
 

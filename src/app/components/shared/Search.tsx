@@ -4,11 +4,12 @@ import { searchMovieData } from '@/app/lib/movieApi';
 import { useState, useEffect } from 'react';
 import { useDebounce } from 'use-debounce';
 import { MovieImage } from '@/app/components/shared/movieImage/MovieImage';
+import type { Movie } from '@/app/types';
 
 const Search = () => {
   const [data, setData] = useState<any>(null);
   const [searchFilm, setSearchFilm] = useState('');
-  const [debouncedValue] = useDebounce(searchFilm, 600);
+  const [debouncedValue] = useDebounce(searchFilm, 400);
   const [isVisible, setVisible] = useState(false);
 
   useEffect(() => {
@@ -49,7 +50,7 @@ const Search = () => {
       {isVisible && searchFilm && data && (
         <div className='absolute w-full rounded-b-2xl bg-slate-900'>
           <ul className='-mt-1 grid w-full grid-cols-2 bg-slate-900'>
-            {data.slice(0, 8).map((item: any) => (
+            {data.slice(0, 8).map((item: Movie) => (
               <li
                 key={item.id}
                 onClick={handleBlur}

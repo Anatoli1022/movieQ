@@ -1,8 +1,8 @@
 import Link from 'next/link';
 import { MovieImage } from '@/app/components/shared/movieImage/MovieImage';
-
+import type { Movie } from '@/app/types';
 interface MovieListProps {
-  movies: Array<{ id: number; title: string; poster_path: string }>;
+  movies: Array<Movie>;
 }
 
 const MovieList = ({ movies }: MovieListProps) => {
