@@ -1,3 +1,4 @@
+'use client'
 import React, { useState, useEffect } from 'react';
 import { Wheel } from 'react-custom-roulette';
 import Link from 'next/link';
@@ -8,7 +9,7 @@ const Roulette = ({ data }: any) => {
   const [rouletteData, setRouletteData] = useState(data);
 
   const handleSpinClick = () => {
-    if (!mustSpin) {
+    if (!mustSpin && rouletteData) {
       const newPrizeNumber = Math.floor(Math.random() * rouletteData.length);
       setPrizeNumber(newPrizeNumber);
       setMustSpin(true);
