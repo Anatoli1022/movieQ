@@ -1,7 +1,11 @@
 'use client';
 import { useState, useEffect } from 'react';
-import Roulette from '../components/Roulette';
 import { getGenresMovie } from '../lib/movieApi';
+import dynamic from 'next/dynamic';
+
+const Roulette = dynamic(() => import('../components/Roulette'), {
+  ssr: false,
+});
 
 const Page = () => {
   const [genresMovie, setGenresMovie] = useState<{ id: number; name: string }[] | null>(null);
