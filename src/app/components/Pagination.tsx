@@ -8,14 +8,16 @@ interface PaginationProps {
 }
 
 const Pagination = ({ currentPage, totalPages, searchQuery, maxPagesToShow = 5 }: PaginationProps) => {
+  const limitedTotalPages = Math.min(totalPages, 500);
+
   const generatePageNumbers = () => {
     let startPage = Math.max(1, currentPage - 2);
-    let endPage = Math.min(totalPages, currentPage + 2);
+    let endPage = Math.min(limitedTotalPages, currentPage + 2);
 
     if (currentPage <= 3) {
-      endPage = Math.min(5, totalPages);
-    } else if (currentPage > totalPages - 3) {
-      startPage = Math.max(totalPages - 4, 1);
+      endPage = Math.min(5, limitedTotalPages);
+    } else if (currentPage > limitedTotalPages - 3) {
+      startPage = Math.max(limitedTotalPages - 4, 1);
     }
 
     const pageNumbers = [];
@@ -64,7 +66,7 @@ const Pagination = ({ currentPage, totalPages, searchQuery, maxPagesToShow = 5 }
         </Link>
       ))}
 
-      {currentPage < totalPages && (
+      {currentPage < limitedTotalPages && (
         <>
           <Link
             href={{
@@ -78,7 +80,7 @@ const Pagination = ({ currentPage, totalPages, searchQuery, maxPagesToShow = 5 }
           <Link
             href={{
               pathname: '/searchResults',
-              query: { search: searchQuery, page: totalPages },
+              query: { search: searchQuery, page: limitedTotalPages },
             }}
             className='transition hover:text-slate-300'
           >
@@ -89,4 +91,5 @@ const Pagination = ({ currentPage, totalPages, searchQuery, maxPagesToShow = 5 }
     </div>
   );
 };
+
 export default Pagination;

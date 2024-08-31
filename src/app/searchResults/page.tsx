@@ -1,7 +1,7 @@
 'use client';
 import { useEffect, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
-import { searchMovieData } from '@/app/lib/movieApi';
+import { searchMovieData, discoverSearch } from '@/app/lib/movieApi';
 import Pagination from '@/app/components/Pagination';
 import MovieList from '../components/MovieList';
 
@@ -13,13 +13,18 @@ const SearchResultsPage = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const result = await searchMovieData(searchQuery, currentPage);
+      let result;
+
+      if (searchQuery && isNaN(Number(searchQuery))) {
+        result = await searchMovieData(searchQuery, currentPage);
+      } else {
+        result = await discoverSearch(Number(searchQuery), currentPage);
+      }
+
       setData(result);
     };
 
-    if (searchQuery) {
-      fetchData();
-    }
+    fetchData();
   }, [searchQuery, currentPage]);
 
   return (
