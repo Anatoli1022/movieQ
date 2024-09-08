@@ -4,9 +4,9 @@ import { useEffect, useState } from 'react';
 import RandomFilm from '../components/RandomFilm';
 import MovieList from '../components/MovieList';
 import { Movie, ApiResponse } from '../types';
-// const socket = io.connect('http://localhost:3001');
+// const socket = io('http://localhost:3001');
 
-const socket = io.connect(process.env.NEXT_PUBLIC_SOCKET_URL);
+const socket = io(process.env.NEXT_PUBLIC_SOCKET_URL);
 const Page = () => {
   const [roomId, setRoom] = useState('');
   const [messageReceived, setMessageReceived] = useState('');
