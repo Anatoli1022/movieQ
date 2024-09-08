@@ -94,6 +94,7 @@ const Page = () => {
           {movie && <RandomFilm movie={movie.results[num]} />}
         </>
       )}
+      <div>new new logic</div>
 
       <div className='mt-10'>
         <h2 className='text-3xl'>Matches movie</h2>
