@@ -4,6 +4,7 @@ import 'dotenv/config';
 const nextConfig = {
   env: {
     NEXT_API_MOVIE_KEY: process.env.NEXT_API_MOVIE_KEY,
+    NEXT_PUBLIC_SOCKET_URL: process.env.NEXT_PUBLIC_SOCKET_URL,
   },
   images: {
     remotePatterns: [
