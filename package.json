@@ -10,9 +10,9 @@
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.44.2",
-    "dotenv": "^16.4.5",
     "flowbite": "^2.5.1",
     "flowbite-react": "^0.10.1",
+    "motion": "^11.13.1",
     "next": "14.2.4",
     "prettier-plugin-tailwindcss": "^0.6.5",
     "react": "^18",

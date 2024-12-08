@@ -4,9 +4,9 @@ import { useEffect, useState } from 'react';
 import RandomFilm from '../components/RandomFilm';
 import MovieList from '../components/MovieList';
 import { Movie, ApiResponse } from '../types';
-// const socket = io('http://localhost:3001');
+const socket = io('http://localhost:3001');
 
-const socket = io(process.env.NEXT_PUBLIC_SOCKET_URL || 'http://localhost:3001');
+// const socket = io(process.env.NEXT_PUBLIC_SOCKET_URL || 'http://localhost:3001');
 const Page = () => {
   const [roomId, setRoom] = useState('');
   const [messageReceived, setMessageReceived] = useState('');
@@ -82,23 +82,11 @@ const Page = () => {
         Join Room
       </button>
 
-      {movie && (
-        <>
-          <button onClick={() => likeMovie(movie.results[num])} className='rounded-r-lg border p-2'>
-            Like Movie
-          </button>
-          <button onClick={skipMovie} className='rounded-r-lg border p-2'>
-            Skip Movie
-          </button>
-
-          {movie && <RandomFilm movie={movie.results[num]} />}
-        </>
-      )}
-      <div>new new logic</div>
+      {movie && <RandomFilm likeMovie={likeMovie} skipMovie={skipMovie} movie={movie.results[num]} />}
 
       <div className='mt-10'>
         <h2 className='text-3xl'>Matches movie</h2>
-        <div className='flex gap-3'>{matchesMovie.length > 0 && <MovieList movies={matchesMovie} />}</div>
+        <div className='mt-2'>{matchesMovie.length > 0 && <MovieList movies={matchesMovie} />}</div>
       </div>
 
       {messageReceived && <p> Message: {messageReceived} </p>}

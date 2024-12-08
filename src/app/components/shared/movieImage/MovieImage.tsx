@@ -3,15 +3,15 @@ import { useState } from 'react';
 import Image from 'next/image';
 import { addDefaultImage } from './addDefaultImage';
 import Skeleton from './Skeleton';
-import type { Movie} from '@/app/types';
+import type { Movie } from '@/app/types';
 
 export const MovieImage = ({ movie, width, height }: { movie: Movie; width: number; height: number }) => {
   const [isLoading, setIsLoading] = useState(true);
 
   return (
     <div
+      className='relative'
       style={{
-        position: 'relative',
         width: isLoading ? width : '',
         height: isLoading ? height : '',
       }}
@@ -23,7 +23,7 @@ export const MovieImage = ({ movie, width, height }: { movie: Movie; width: numb
         alt={movie.title}
         width={width}
         height={height}
-        className={`${isLoading ? 'opacity-0' : 'opacity-100'} rounded-lg`}
+        className={`pointer-events-none ${isLoading ? 'opacity-0' : 'opacity-100'} rounded-lg`}
         onLoad={() => setIsLoading(false)}
         onError={(e) => addDefaultImage(e, { width, height })}
       />
