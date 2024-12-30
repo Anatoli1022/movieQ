@@ -2,7 +2,7 @@ import Link from 'next/link';
 import { MovieImage } from '@/app/components/shared/movieImage/MovieImage';
 import type { Movie } from '@/app/types';
 interface MovieListProps {
-  movies: Array<Movie>;
+  movies: Movie[];
 }
 
 const MovieList = ({ movies }: MovieListProps) => {

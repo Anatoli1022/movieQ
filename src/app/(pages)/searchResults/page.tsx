@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { searchMovieData, discoverSearch } from '@/app/lib/movieApi';
 import Pagination from '@/app/components/Pagination';
-import MovieList from '../components/MovieList';
+import MovieList from '../../components/MovieList';
 
 const SearchResultsPage = () => {
   const searchParams = useSearchParams();

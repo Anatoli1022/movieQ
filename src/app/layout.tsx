@@ -3,6 +3,21 @@ import './globals.css';
 import Header from '@/app/components/shared/Header';
 import Footer from '@/app/components/shared/Footer';
 import { Suspense } from 'react';
+import { Frank_Ruhl_Libre, Inter } from 'next/font/google';
+
+// Импорт шрифта Frank Ruhl Libre
+const frankRuhlLibre = Frank_Ruhl_Libre({
+  subsets: ['latin'],
+  weight: ['400', '700'],
+  display: 'swap',
+});
+
+// Импорт шрифта Inter
+const inter = Inter({
+  subsets: ['latin'],
+  weight: ['400', '700'],
+  display: 'swap',
+});
 
 export const metadata: Metadata = {
   title: 'Create Next App',
@@ -15,13 +30,13 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang='en'>
-      <body className='bg-slate-900 text-white'>
+    <html lang='en' className={`${frankRuhlLibre.className} ${inter.className}`}>
+      <body className='bg-[#242E44] text-white'>
         <Header />
         <Suspense fallback={null}>
           <main className='ml-auto mr-auto mt-10 max-w-7xl'>{children}</main>
         </Suspense>
-        <Footer />
+        {/* <Footer /> */}
       </body>
     </html>
   );

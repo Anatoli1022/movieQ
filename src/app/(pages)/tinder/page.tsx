@@ -1,9 +1,9 @@
 'use client';
 import { io } from 'socket.io-client';
 import { useEffect, useState } from 'react';
-import RandomFilm from '../components/RandomFilm';
-import MovieList from '../components/MovieList';
-import { Movie, ApiResponse } from '../types';
+import RandomFilm from '../../components/RandomFilm';
+import MovieList from '../../components/MovieList';
+import { Movie } from '../../types';
 // const socket = io('http://localhost:3001');
 
 const socket = io(process.env.NEXT_PUBLIC_SOCKET_URL || 'http://localhost:3001');
@@ -11,8 +11,8 @@ const Page = () => {
   const [roomId, setRoom] = useState('');
   const [messageReceived, setMessageReceived] = useState('');
   const [userId, setUserId] = useState('');
-  const [movie, setMovie] = useState<ApiResponse | null>(null);
-  const [matchesMovie, setMatchesMovie] = useState<Array<Movie> | []>([]);
+  const [movie, setMovie] = useState<Movie[] | null>(null);
+  const [matchesMovie, setMatchesMovie] = useState<Movie[] | []>([]);
   const [num, setNum] = useState(0);
 
   // Генерация случайного идентификатора пользователя
@@ -53,7 +53,7 @@ const Page = () => {
     });
 
     // Показываем фильм, полученный с сервера
-    socket.on('show_movie', (data: ApiResponse) => {
+    socket.on('show_movie', (data: Movie[]) => {
       setMovie(data);
     });
 
@@ -82,7 +82,7 @@ const Page = () => {
         Join Room
       </button>
 
-      {movie && <RandomFilm likeMovie={likeMovie} skipMovie={skipMovie} movie={movie.results[num]} />}
+      {movie && <RandomFilm likeMovie={likeMovie} skipMovie={skipMovie} movie={movie[num]} />}
 
       <div className='mt-10'>
         <h2 className='text-3xl'>Matches movie</h2>

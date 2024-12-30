@@ -1,10 +1,14 @@
+
 import type { Metadata } from 'next';
 import { fetchMovieData } from '@/app/lib/movieApi';
-import SwiperMovie from '@/app/components/shared/swiperMovie';
+
 import { MovieImage } from '@/app/components/shared/movieImage/MovieImage';
 import Image from 'next/image';
 import noTrailerImage from '@/app/assets/noTrailer.svg';
-import type { Movie, Params, VideoResponse, ApiResponse, Video } from '@/app/types';
+import type { Movie, Params,  Video } from '@/app/types';
+
+import Similar from '@/app/components/pages/movie/Similar';
+import Trailer from '@/app/components/pages/movie/Trailer';
 
 export async function generateMetadata({ params }: { params: Params }): Promise<Metadata> {
   const { id } = params;
@@ -26,12 +30,9 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
 export default async function MoviePage({ params }: { params: Params }) {
   const { id } = params;
   let movie: Movie | null = null;
-  let videos: VideoResponse;
-  let similar: ApiResponse;
+
   try {
     movie = await fetchMovieData(id);
-    videos = await fetchMovieData(id, '/videos');
-    similar = await fetchMovieData(id, '/similar');
   } catch (error) {
     console.error('Error in Home component:', error);
     return (
@@ -42,7 +43,6 @@ export default async function MoviePage({ params }: { params: Params }) {
     );
   }
 
-  const trailer = videos.results.find((video: Video) => video.type === 'Trailer' && video.site === 'YouTube');
   return (
     <div className='pb-4'>
       {movie && (
@@ -106,32 +106,9 @@ export default async function MoviePage({ params }: { params: Params }) {
           </div>
         </>
       )}
-      <div className='mt-10'>
-        {trailer ? (
-          <iframe
-            width='660'
-            height='415'
-            className='m-auto'
-            src={`https://www.youtube.com/embed/${trailer.key}`}
-            title='YouTube video player'
-            allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture'
-            allowFullScreen
-          ></iframe>
-        ) : (
-          <Image src={noTrailerImage} alt={'No trailer'} width={660} height={415} className='m-auto block rounded-lg' />
-        )}
-      </div>
+      <Trailer id={id} />
 
-      <div className='mt-8'>
-        {similar && similar.results.length > 0 ? (
-          <>
-            <h3 className='text-3xl'>You may also like...</h3>
-            <SwiperMovie movieData={similar} />
-          </>
-        ) : (
-          <h3 className='text-3xl'>No similar films were found.</h3>
-        )}
-      </div>
+      <Similar id={id} />
     </div>
   );
 }

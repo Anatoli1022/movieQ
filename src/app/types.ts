@@ -11,14 +11,7 @@ export interface Movie {
   production_companies: [{ id: number; name: string; logo_path: string }];
   production_countries: [{ name: string }];
 }
-export interface VideoResponse {
-  id: number;
-  results: Video[];
-}
 
-export interface ApiResponse {
-  results: Movie[];
-}
 export interface Video {
   id: string;
   key: string;

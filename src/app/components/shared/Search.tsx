@@ -48,8 +48,8 @@ const Search = () => {
         />
       </form>{' '}
       {isVisible && searchFilm && data && (
-        <div className='absolute w-full rounded-b-2xl bg-slate-900'>
-          <ul className='-mt-1 grid w-full grid-cols-2 bg-slate-900'>
+        <div className='absolute w-full rounded-b-2xl bg-[#242E44]'>
+          <ul className='-mt-1 grid w-full grid-cols-2 bg-[#242E44]'>
             {data.slice(0, 8).map((item: Movie) => (
               <li
                 key={item.id}

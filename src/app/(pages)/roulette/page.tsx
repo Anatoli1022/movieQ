@@ -1,9 +1,9 @@
 'use client';
 import { useState, useEffect } from 'react';
-import { getGenresMovie } from '../lib/movieApi';
+import { getGenresMovie } from '../../lib/movieApi';
 import dynamic from 'next/dynamic';
 
-const Roulette = dynamic(() => import('../components/Roulette'), {
+const Roulette = dynamic(() => import('../../components/Roulette'), {
   ssr: false,
 });
 

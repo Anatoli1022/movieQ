@@ -1,16 +1,33 @@
 import Link from 'next/link';
+import Image from 'next/image';
 import Search from './Search';
+import rock from '@/app/assets/rock.png';
 
 const Header = () => {
   return (
-    <header className='sticky top-0 z-20 border-b border-[#DDF6F2] bg-slate-900 px-2 py-4'>
+    <header className='px-2 py-4'>
       <nav className='m-auto flex max-w-7xl items-center justify-between'>
-        <Link href={'/'}>MovieQ</Link>
-
-        <Search />
-
+        <div className='flex'>
+          <Link href={'/'}>
+            <Image src={rock} alt='' loading='eager' />
+          </Link>
+          <div className='ml-5 flex'>
+            <Link
+              href={'/roulette'}
+              className='rounded-[90px] border border-white px-5 py-2.5 text-sm transition hover:bg-inherit'
+            >
+              Roulette
+            </Link>
+            <Search />
+          </div>
+        </div>
         <div>
-          <Link href={'/'}>Home</Link>
+          <Link
+            href={'/tinder'}
+            className='rounded-[90px] border border-[#EA7D00] bg-[#EA7D00] px-5 py-2.5 text-sm transition hover:bg-inherit'
+          >
+            Create a room
+          </Link>
         </div>
       </nav>
     </header>

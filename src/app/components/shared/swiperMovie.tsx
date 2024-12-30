@@ -6,9 +6,9 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import { FreeMode } from 'swiper/modules';
 import 'swiper/css';
 import 'swiper/css/free-mode';
-import type { Movie, ApiResponse } from '@/app/types';
+import type { Movie } from '@/app/types';
 
-const SwiperMovie = ({ movieData }: { movieData: ApiResponse | null }) => {
+const SwiperMovie = ({ movieData }: { movieData: Movie[]  }) => {
   return (
     <Swiper
       slidesPerView={6}
@@ -20,8 +20,8 @@ const SwiperMovie = ({ movieData }: { movieData: ApiResponse | null }) => {
       modules={[FreeMode]}
       className='mySwiper mt-3 max-w-7xl'
     >
-      {movieData &&
-        movieData.results.map((movie: Movie) => (
+      {
+        movieData.map((movie: Movie) => (
           <SwiperSlide key={movie.id}>
             <Link href={`/movie/${movie.id}`}>
               <MovieImage movie={movie} width={200} height={300} />
