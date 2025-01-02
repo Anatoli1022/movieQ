@@ -13,7 +13,7 @@ export const runtime = 'edge';
 
 export default async function Home() {
   return (
-    <div className='flex flex-col gap-10 overflow-hidden'>
+    <div className='flex flex-col gap-10 overflow-hidden mt-10'>
       <Hero />
       <Popular />
       <TopRatedMovie />

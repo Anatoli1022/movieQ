@@ -16,6 +16,18 @@ const config: Config = {
         'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
         'gradient-conic': 'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
       },
+      colors: {
+        lightBlue: '#242E44',
+      },
+      screens: {
+        xl: { max: '1279px' },
+
+        lg: { max: '1023px' },
+
+        md: { max: '767px' },
+
+        sm: { max: '639px' },
+      },
     },
   },
   plugins: [require('flowbite/plugin')],

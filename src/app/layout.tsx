@@ -31,10 +31,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang='en' className={`${frankRuhlLibre.className} ${inter.className}`}>
-      <body className='bg-[#242E44] text-white'>
+      <body className='bg-lightBlue text-white'>
         <Header />
         <Suspense fallback={null}>
-          <main className='ml-auto mr-auto mt-10 max-w-7xl'>{children}</main>
+          <main className='ml-auto mr-auto max-w-7xl'>{children}</main>
         </Suspense>
         {/* <Footer /> */}
       </body>

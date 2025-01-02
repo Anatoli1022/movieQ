@@ -1,16 +1,19 @@
 'use client';
+import search from '@/app/assets/search.svg';
 import Link from 'next/link';
 import { searchMovieData } from '@/app/lib/movieApi';
 import { useState, useEffect } from 'react';
 import { useDebounce } from 'use-debounce';
 import { MovieImage } from '@/app/components/shared/movieImage/MovieImage';
 import type { Movie } from '@/app/types';
+import Image from 'next/image';
 
 const Search = () => {
   const [data, setData] = useState<any>(null);
   const [searchFilm, setSearchFilm] = useState('');
   const [debouncedValue] = useDebounce(searchFilm, 400);
   const [isVisible, setVisible] = useState(false);
+  const [visibleForm, setVisibleForm] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -34,22 +37,29 @@ const Search = () => {
     setVisible(false);
   };
 
+  const handleVisibleForm = () => setVisibleForm((prevState) => !prevState);
+
   return (
     <div className='relative z-10 w-full max-w-96'>
-      <form>
-        <input
-          type='text'
-          autoFocus
-          onClick={handleFocus}
-          value={searchFilm}
-          onChange={handleChange}
-          className='relative z-10 w-full rounded-md border border-gray-300 px-3 py-2 text-black'
-          placeholder='Search movies...'
-        />
-      </form>{' '}
-      {isVisible && searchFilm && data && (
-        <div className='absolute w-full rounded-b-2xl bg-[#242E44]'>
-          <ul className='-mt-1 grid w-full grid-cols-2 bg-[#242E44]'>
+      <div className='flex items-center gap-x-5'>
+        <Image src={search} alt='' aria-hidden='true' onClick={handleVisibleForm} className='cursor-pointer' />
+        {visibleForm && (
+          <form className='relative'>
+            <input
+              type='text'
+              autoFocus
+              onClick={handleFocus}
+              value={searchFilm}
+              onChange={handleChange}
+              className='placeholder-white::placeholder bg-lightBlue relative z-10 w-full rounded-md border border-white text-white'
+              placeholder='Search movies...'
+            />
+          </form>
+        )}
+      </div>
+      {isVisible && visibleForm && searchFilm && data && (
+        <div className='bg-lightBlue absolute w-full rounded-b-2xl'>
+          <ul className='bg-lightBlue -mt-1 grid w-full grid-cols-2'>
             {data.slice(0, 8).map((item: Movie) => (
               <li
                 key={item.id}

@@ -20,10 +20,10 @@ const Similar = ({ id }: { id: string }) => {
   }, []);
 
   return (
-    <section className='mt-8'>
+    <section className='mt-60 lg:mt-80'>
       {similar ? (
         <>
-          <h3 className='font-frank text-4xl font-normal'>You'll like it</h3>
+          <h3 className='font-frank text-xl font-normal uppercase'>You'll like it</h3>
           <SwiperMovie movieData={similar} />
         </>
       ) : (
