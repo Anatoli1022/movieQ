@@ -31,7 +31,7 @@ const SearchResultsPage = () => {
   }, [type, searchQuery, currentPage]);
 
   return (
-    <div className='mt-10 pb-4'>
+    <div className='mt-10'>
       {data && (
         <>
           <MovieList movies={data.results} />

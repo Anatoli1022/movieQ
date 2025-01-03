@@ -28,7 +28,7 @@ export default async function MoviePage({ params }: { params: Params }) {
   const { id } = params;
 
   return (
-    <div className='pb-4'>
+    <div >
       <div className='aspect-video w-full'>
         <MovieInfo id={id} />
         <Trailer id={id} />

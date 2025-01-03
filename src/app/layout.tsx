@@ -34,7 +34,7 @@ export default function RootLayout({
       <body className='bg-lightBlue text-white'>
         <Header />
         <Suspense fallback={null}>
-          <main className='ml-auto mr-auto max-w-7xl'>{children}</main>
+          <main className='ml-auto pb-4 mr-auto max-w-7xl'>{children}</main>
         </Suspense>
         {/* <Footer /> */}
       </body>
