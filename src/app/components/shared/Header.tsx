@@ -18,9 +18,9 @@ const Header = () => {
             >
               Roulette
             </Link>
-            <div className='ml-4'>
+          
               <Search />
-            </div>
+          
           </div>
         </div>
         <div>

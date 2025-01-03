@@ -40,8 +40,8 @@ const Search = () => {
   const handleVisibleForm = () => setVisibleForm((prevState) => !prevState);
 
   return (
-    <div className='relative z-10 w-full max-w-96'>
-      <div className='flex items-center gap-x-5'>
+    <div className='relative z-10 ml-4 w-full max-w-[400px]'>
+      <div className='flex w-full items-center gap-x-5'>
         <Image src={search} alt='' aria-hidden='true' onClick={handleVisibleForm} className='cursor-pointer' />
         {visibleForm && (
           <form className='relative'>
@@ -51,15 +51,15 @@ const Search = () => {
               onClick={handleFocus}
               value={searchFilm}
               onChange={handleChange}
-              className='placeholder-white::placeholder bg-lightBlue relative z-10 w-full rounded-md border border-white text-white'
+              className='placeholder-white::placeholder w-[360px] relative z-10  rounded-md border border-white bg-lightBlue text-white'
               placeholder='Search movies...'
             />
           </form>
         )}
       </div>
       {isVisible && visibleForm && searchFilm && data && (
-        <div className='bg-lightBlue absolute w-full rounded-b-2xl'>
-          <ul className='bg-lightBlue -mt-1 grid w-full grid-cols-2'>
+        <div className='absolute w-[400px] rounded-b-2xl bg-lightBlue'>
+          <ul className='-mt-1 grid w-full grid-cols-2 bg-lightBlue'>
             {data.slice(0, 8).map((item: Movie) => (
               <li
                 key={item.id}
