@@ -2,8 +2,8 @@
 import { io } from 'socket.io-client';
 import { useEffect, useState } from 'react';
 import RandomFilm from '../../components/RandomFilm';
-import MovieList from '../../components/MovieList';
 import { Movie } from '../../types';
+import MatchesMovie from '@/app/components/pages/tinder/MatchesMovie';
 // const socket = io('http://localhost:3001');
 
 const socket = io(process.env.NEXT_PUBLIC_SOCKET_URL || 'http://localhost:3001');
@@ -69,25 +69,26 @@ const Page = () => {
       socket.off('match');
     };
   }, []);
+  console.log(movie);
 
   return (
-    <div>
-      <input
-        type='text'
-        className='text-black'
-        placeholder='Room Number...'
-        onChange={(event) => setRoom(event.target.value)}
-      />
-      <button onClick={joinRoom} className='rounded-r-lg border p-2'>
-        Join Room
-      </button>
-
+    <div className='relative'>
+      {!movie && (
+        <>
+          <input
+            type='text'
+            className='text-black'
+            placeholder='Room Number...'
+            onChange={(event) => setRoom(event.target.value)}
+          />
+          <button onClick={joinRoom} className='rounded-r-lg border p-2'>
+            Join Room
+          </button>
+        </>
+      )}
       {movie && <RandomFilm likeMovie={likeMovie} skipMovie={skipMovie} movie={movie[num]} />}
 
-      <div className='mt-10'>
-        <h2 className='text-3xl'>Matches movie</h2>
-        <div className='mt-2'>{matchesMovie.length > 0 && <MovieList movies={matchesMovie} />}</div>
-      </div>
+      <div className='mt-2'>{matchesMovie.length > 0 && <MatchesMovie movies={matchesMovie} />}</div>
 
       {messageReceived && <p> Message: {messageReceived} </p>}
     </div>

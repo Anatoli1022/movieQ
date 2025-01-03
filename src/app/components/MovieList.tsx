@@ -7,7 +7,7 @@ interface MovieListProps {
 
 const MovieList = ({ movies }: MovieListProps) => {
   return (
-    <ul className='m-auto flex flex-wrap gap-6'>
+    <ul className='m-auto flex flex-wrap justify-center gap-6'>
       {movies.map((movie) => (
         <li key={movie.id}>
           <Link href={`/movie/${movie.id}`}>

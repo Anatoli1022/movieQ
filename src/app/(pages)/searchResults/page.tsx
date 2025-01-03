@@ -1,12 +1,14 @@
 'use client';
+
 import { useEffect, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
-import { searchMovieData, discoverSearch } from '@/app/lib/movieApi';
+import { searchMovieData, discoverSearch, fetchMovieData } from '@/app/lib/movieApi';
 import Pagination from '@/app/components/Pagination';
 import MovieList from '../../components/MovieList';
 
 const SearchResultsPage = () => {
   const searchParams = useSearchParams();
+  const type = searchParams.get('type') || '';
   const searchQuery = searchParams.get('search') || '';
   const currentPage = parseInt(searchParams.get('page') || '1', 10);
   const [data, setData] = useState<any>(null);
@@ -14,8 +16,9 @@ const SearchResultsPage = () => {
   useEffect(() => {
     const fetchData = async () => {
       let result;
-
-      if (searchQuery && isNaN(Number(searchQuery))) {
+      if (type) {
+        result = await fetchMovieData(type, '', currentPage);
+      } else if (searchQuery && isNaN(Number(searchQuery))) {
         result = await searchMovieData(searchQuery, currentPage);
       } else {
         result = await discoverSearch(Number(searchQuery), currentPage);
@@ -25,10 +28,10 @@ const SearchResultsPage = () => {
     };
 
     fetchData();
-  }, [searchQuery, currentPage]);
+  }, [type, searchQuery, currentPage]);
 
   return (
-    <div>
+    <div className='mt-10 pb-4'>
       {data && (
         <>
           <MovieList movies={data.results} />

@@ -25,17 +25,17 @@ const Trailer = ({ id }: { id: string }) => {
   const trailer = videos ? videos.find((video: Video) => video.type === 'Trailer' && video.site === 'YouTube') : null;
 
   return (
-    <div >
+    <div>
       {trailer ? (
         <iframe
-          className='absolute inset-0 brightness-50 -z-[2] aspect-video h-full max-h-[900px] w-full'
+          className='absolute inset-0 -z-[2] aspect-video h-full max-h-[900px] w-full brightness-50'
           src={`https://www.youtube.com/embed/${trailer.key}?autoplay=1&mute=1`}
           title='YouTube video player'
           allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture'
           allowFullScreen
         ></iframe>
       ) : (
-        <div className='absolute inset-0 -z-[2] aspect-video h-full max-h-[900px] w-full'>
+        <div className='absolute inset-0 -z-[2] aspect-video h-full max-h-[900px] w-full brightness-50'>
           <Image
             src={noTrailerImage}
             alt='No trailer'

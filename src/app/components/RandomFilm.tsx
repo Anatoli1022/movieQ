@@ -14,7 +14,7 @@ const RandomFilm = ({ movie, likeMovie, skipMovie }: RandomFilmProps) => {
   const borderColor = useTransform(
     x,
     [-150, 0, 150], // Диапазон значений x
-    ['#E60000', '#ffffff', ' #008000'], // Соответствующие цвета
+    ['#E60000', '#ffffff', '#008000'], // Соответствующие цвета
   );
   const handleDragEnd = (_: any, info: any) => {
     const { offset } = info;
