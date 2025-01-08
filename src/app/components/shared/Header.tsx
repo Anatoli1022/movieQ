@@ -9,7 +9,7 @@ const Header = () => {
       <nav className='m-auto flex max-w-7xl items-center justify-between'>
         <div className='flex items-center gap-x-5'>
           <Link href={'/'}>
-            <Image src={rock} alt='' loading='eager' />
+            <Image src={rock} alt='' loading='eager' priority aria-hidden='true' />
           </Link>
           <div className='flex items-center'>
             <Link
@@ -18,9 +18,8 @@ const Header = () => {
             >
               Roulette
             </Link>
-          
-              <Search />
-          
+
+            <Search />
           </div>
         </div>
         <div>

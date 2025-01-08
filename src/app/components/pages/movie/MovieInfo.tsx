@@ -1,6 +1,5 @@
 'use client';
 import { useState, useEffect } from 'react';
-
 import { fetchMovieData } from '@/app/lib/movieApi';
 import type { Movie } from '@/app/types';
 
@@ -26,7 +25,7 @@ const MovieInfo = ({ id }: { id: string }) => {
   return (
     <div className='relative flex aspect-video w-full items-center justify-center'>
       {movie && (
-        <div>
+        <>
           {activeButton === 1 && (
             <div className='flex flex-col items-center justify-center gap-y-8'>
               <h1 className='text-center text-7xl font-bold'>{movie.title}</h1>
@@ -54,7 +53,7 @@ const MovieInfo = ({ id }: { id: string }) => {
                 </div>
               </div>
               <h1 className='text-center text-4xl font-bold'>{movie.title}</h1>
-              <div className='flex w-full justify-between'>
+              <div className='flex w-full justify-between gap-x-5'>
                 <div>
                   <h2 className='font-frank text-xl font-bold uppercase'>Production countries</h2>
                   <ul className='mt-2.5 flex flex-col gap-y-2'>
@@ -92,9 +91,9 @@ const MovieInfo = ({ id }: { id: string }) => {
               </div>
             </div>
           )}
-        </div>
+        </>
       )}
-      <div className='absolute bottom-5 left-3'>
+      <div className='absolute -bottom-9 left-3'>
         <button
           onClick={() => handleClickButton(1)}
           type='button'
