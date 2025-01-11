@@ -22,7 +22,7 @@ const Trailer = ({ id }: { id: string }) => {
     };
 
     fetchData();
-  }, []);
+  }, [id]);
 
   const trailer = videos ? videos.find((video: Video) => video.type === 'Trailer' && video.site === 'YouTube') : null;
   const handleClickButton = () => setActiveButton((prevState) => !prevState);
