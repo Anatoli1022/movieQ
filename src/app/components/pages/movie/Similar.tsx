@@ -17,7 +17,7 @@ const Similar = ({ id }: { id: string }) => {
     };
 
     fetchData();
-  }, []);
+  }, [id]);
 
   return (
     <section className='mt-60 lg:mt-80'>
