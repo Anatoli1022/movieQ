@@ -32,7 +32,7 @@ const Page = () => {
       setUserId(userId);
 
       // Создаем и инициализируем сокет при подключении к комнате
-      const socket = io('http://localhost:3001');
+      const socket = io(process.env.NEXT_PUBLIC_SOCKET_URL || 'http://localhost:3001');
       setSocketInstance(socket); // Сохраняем экземпляр сокета
 
       socket.emit('join_room', userId, roomId);
