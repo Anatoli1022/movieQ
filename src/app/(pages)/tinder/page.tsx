@@ -1,19 +1,24 @@
 'use client';
+
 import { io } from 'socket.io-client';
 import { useEffect, useState } from 'react';
 import RandomFilm from '../../components/RandomFilm';
 import { Movie } from '../../types';
 import MatchesMovie from '@/app/components/pages/tinder/MatchesMovie';
-// const socket = io('http://localhost:3001');
 
-const socket = io(process.env.NEXT_PUBLIC_SOCKET_URL || 'http://localhost:3001');
+// Типы для данных от сервера
+interface ServerMessage {
+  message: string;
+}
+
 const Page = () => {
-  const [roomId, setRoom] = useState('');
-  const [messageReceived, setMessageReceived] = useState('');
-  const [userId, setUserId] = useState('');
-  const [movie, setMovie] = useState<Movie[] | null>(null);
-  const [matchesMovie, setMatchesMovie] = useState<Movie[] | []>([]);
-  const [num, setNum] = useState(0);
+  const [roomId, setRoom] = useState(''); // ID комнаты
+  const [messageReceived, setMessageReceived] = useState(''); // Сообщения от сервера
+  const [userId, setUserId] = useState(''); // ID пользователя
+  const [movie, setMovie] = useState<Movie[] | null>(null); // Список фильмов
+  const [matchesMovie, setMatchesMovie] = useState<Movie[] | []>([]); // Мэтчи фильмов
+  const [num, setNum] = useState(0); // Номер текущего фильма
+  const [socketInstance, setSocketInstance] = useState<any>(null); // Экземпляр сокета (создаем динамически)
 
   // Генерация случайного идентификатора пользователя
   function generateUserId() {
@@ -25,6 +30,11 @@ const Page = () => {
     if (roomId !== '') {
       const userId = generateUserId();
       setUserId(userId);
+
+      // Создаем и инициализируем сокет при подключении к комнате
+      const socket = io('http://localhost:3001');
+      setSocketInstance(socket); // Сохраняем экземпляр сокета
+
       socket.emit('join_room', userId, roomId);
     }
   };
@@ -32,7 +42,7 @@ const Page = () => {
   // Лайк фильма
   const likeMovie = (movie: Movie) => {
     if (roomId !== '' && userId !== '') {
-      socket.emit('like_movie', userId, roomId, movie);
+      socketInstance.emit('like_movie', userId, roomId, movie);
       setNum((prevState) => prevState + 1);
     }
   };
@@ -42,37 +52,41 @@ const Page = () => {
     setNum((prevState) => prevState + 1);
   };
 
+  // Обработка событий с сервера
   useEffect(() => {
-    // Обработка событий с сервера
-    socket.on('room_full', (data) => {
-      setMessageReceived(data.message);
-    });
+    if (socketInstance) {
+      socketInstance.on('room_full', (data: ServerMessage) => {
+        setMessageReceived(data.message);
+      });
 
-    socket.on('user_joined', (data) => {
-      setMessageReceived(data.message);
-    });
+      socketInstance.on('user_joined', (data: ServerMessage) => {
+        setMessageReceived(data.message);
+      });
 
-    // Показываем фильм, полученный с сервера
-    socket.on('show_movie', (data: Movie[]) => {
-      setMovie(data);
-    });
+      // Показываем фильм, полученный с сервера
+      socketInstance.on('show_movie', (data: Movie[]) => {
+        setMovie(data);
+      });
 
-    // Обработка match'а
-    socket.on('match', (data: Movie) => {
-      setMatchesMovie((prevState) => [...prevState, data]);
-    });
+      // Обработка match'а
+      socketInstance.on('match', (data: Movie) => {
+        setMatchesMovie((prevState) => [...prevState, data]);
+      });
 
-    return () => {
-      socket.off('room_full');
-      socket.off('user_joined');
-      socket.off('show_movie');
-      socket.off('match');
-    };
-  }, []);
+      return () => {
+        socketInstance.off('room_full');
+        socketInstance.off('user_joined');
+        socketInstance.off('show_movie');
+        socketInstance.off('match');
+      };
+    }
+  }, [socketInstance]); // Эффект сработает только при изменении socketInstance
+
   console.log(movie);
 
   return (
     <div className='relative'>
+      {/* Если еще не выбран номер комнаты */}
       {!movie && (
         <>
           <input
@@ -86,10 +100,14 @@ const Page = () => {
           </button>
         </>
       )}
+
+      {/* Показываем фильм, если он был получен */}
       {movie && <RandomFilm likeMovie={likeMovie} skipMovie={skipMovie} movie={movie[num]} />}
 
+      {/* Отображаем список матчей */}
       <div className='mt-2'>{matchesMovie.length > 0 && <MatchesMovie movies={matchesMovie} />}</div>
 
+      {/* Сообщение от сервера */}
       {messageReceived && <p> Message: {messageReceived} </p>}
     </div>
   );
