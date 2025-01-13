@@ -20,10 +20,10 @@ const FilmsSection = async ({ title, endpoint }: FilmsSectionProps) => {
 
   return (
     <section>
-      <div className='flex items-center'>
+      <div className='flex items-center justify-between'>
         <h2 className='font-frank text-5xl font-normal'>{title}</h2>
         <Link
-          className='m-auto leading-4 block border-b border-white font-frank text-xl'
+          className='block border-b border-white font-frank text-xl leading-4'
           href={{ pathname: '/searchResults', query: { type: endpoint } }}
         >
           Discover more

@@ -13,6 +13,20 @@ const SearchResultsPage = () => {
   const currentPage = parseInt(searchParams.get('page') || '1', 10);
   const [data, setData] = useState<any>(null);
 
+  let title = '';
+  switch (type) {
+    case 'popular':
+      title = 'Popular Movies';
+      break;
+    case 'top_rated':
+      title = 'Top Rated Movies';
+      break;
+    case 'upcoming':
+      title = 'Coming Soon Movies';
+      break;
+
+  }
+
   useEffect(() => {
     const fetchData = async () => {
       let result;
@@ -34,8 +48,11 @@ const SearchResultsPage = () => {
     <div className='mt-10'>
       {data && (
         <>
-          <MovieList movies={data.results} />
-          <Pagination currentPage={currentPage} totalPages={data.total_pages} searchQuery={searchQuery} />
+          <h2 className='text-center font-frank text-7xl font-normal'>{title}</h2>
+          <div className='mt-6'>
+            <MovieList movies={data.results} />
+          </div>
+          <Pagination currentPage={currentPage} totalPages={data.total_pages} searchQuery={searchQuery} type={type} />
         </>
       )}
     </div>

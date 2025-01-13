@@ -4,10 +4,11 @@ interface PaginationProps {
   currentPage: number;
   totalPages: number;
   searchQuery: string;
+  type: string;
   maxPagesToShow?: number;
 }
 
-const Pagination = ({ currentPage, totalPages, searchQuery, maxPagesToShow = 5 }: PaginationProps) => {
+const Pagination = ({ currentPage, totalPages, searchQuery, type, maxPagesToShow = 5 }: PaginationProps) => {
   const limitedTotalPages = Math.min(totalPages, 500);
 
   const generatePageNumbers = () => {
@@ -35,7 +36,11 @@ const Pagination = ({ currentPage, totalPages, searchQuery, maxPagesToShow = 5 }
           <Link
             href={{
               pathname: '/searchResults',
-              query: { search: searchQuery, page: 1 },
+              query: {
+                type: type ? type : searchQuery,
+                search: !type ? searchQuery : undefined,
+                page: 1,
+              },
             }}
             className='transition hover:text-slate-300'
           >
@@ -44,7 +49,11 @@ const Pagination = ({ currentPage, totalPages, searchQuery, maxPagesToShow = 5 }
           <Link
             href={{
               pathname: '/searchResults',
-              query: { search: searchQuery, page: currentPage - 1 },
+              query: {
+                type: type ? type : searchQuery,
+                search: !type ? searchQuery : undefined,
+                page: currentPage - 1,
+              },
             }}
             className='transition hover:text-slate-300'
           >
@@ -58,7 +67,7 @@ const Pagination = ({ currentPage, totalPages, searchQuery, maxPagesToShow = 5 }
           key={pageNumber}
           href={{
             pathname: '/searchResults',
-            query: { search: searchQuery, page: pageNumber },
+            query: { type: type ? type : searchQuery, search: !type ? searchQuery : undefined, page: pageNumber },
           }}
           className={currentPage === pageNumber ? 'text-slate-400' : 'transition hover:text-slate-300'}
         >
@@ -71,7 +80,11 @@ const Pagination = ({ currentPage, totalPages, searchQuery, maxPagesToShow = 5 }
           <Link
             href={{
               pathname: '/searchResults',
-              query: { search: searchQuery, page: currentPage + 1 },
+              query: {
+                type: type ? type : searchQuery,
+                search: !type ? searchQuery : undefined,
+                page: currentPage + 1,
+              },
             }}
             className='transition hover:text-slate-300'
           >
@@ -80,7 +93,11 @@ const Pagination = ({ currentPage, totalPages, searchQuery, maxPagesToShow = 5 }
           <Link
             href={{
               pathname: '/searchResults',
-              query: { search: searchQuery, page: limitedTotalPages },
+              query: {
+                type: type ? type : searchQuery,
+                search: !type ? searchQuery : undefined,
+                page: limitedTotalPages,
+              },
             }}
             className='transition hover:text-slate-300'
           >
