@@ -44,17 +44,19 @@ const Search = () => {
       <div className='flex w-full items-center gap-x-5'>
         <Image src={search} alt='' aria-hidden='true' onClick={handleVisibleForm} className='cursor-pointer' />
         {visibleForm && (
-          <form className='relative'>
-            <input
-              type='text'
-              autoFocus
-              onClick={handleFocus}
-              value={searchFilm}
-              onChange={handleChange}
-              className='placeholder-white::placeholder w-[360px] relative z-10  rounded-md border border-white bg-lightBlue text-white'
-              placeholder='Search movies...'
-            />
-          </form>
+          <search>
+            <form className='relative'>
+              <input
+                type='text'
+                autoFocus
+                onClick={handleFocus}
+                value={searchFilm}
+                onChange={handleChange}
+                className='placeholder-white::placeholder relative z-10 w-[360px] rounded-md border border-white bg-lightBlue text-white'
+                placeholder='Search movies...'
+              />
+            </form>
+          </search>
         )}
       </div>
       {isVisible && visibleForm && searchFilm && data && (
